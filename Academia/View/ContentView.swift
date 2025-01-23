@@ -15,18 +15,21 @@ struct ContentView: View {
     var body: some View {
         @Bindable var viewModel = viewModel
         
-        VStack {
-            Image(systemName: "lasso.badge.sparkles")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            
-            Button(action: {
+        HStack {
+            Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
+            {
                 Task{
-                    await viewModel.testOllama(prompt: makeAutoQuiz)
+                    await viewModel.testOllama(
+                        prompt: Assistant.generateQuiz(of: "interview question for android developer")
+                    )
                 }
-            }) {
-                Text("Test OLLAMA 3")
-            }
+            }.buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 20)
+                .padding(.vertical, 7)
+                .foregroundColor(.white)
+                .background(Color.accentColor)
+                .cornerRadius(12)
+            
             ScrollView {
                 Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
             }
