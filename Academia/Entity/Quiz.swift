@@ -5,7 +5,7 @@
 //  Created by Dave on 24/01/25.
 //
 
-class Quiz {
+class Quiz: Decodable {
     private let question: String
     private let answer: [String]
     private let correct: Int
