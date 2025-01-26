@@ -5,10 +5,10 @@
 //  Created by Dave on 24/01/25.
 //
 
-class Quiz: Decodable {
-    private let question: String
-    private let answer: [String]
-    private let correct: Int
+class Quiz: Decodable, Identifiable {
+    let question: String
+    let answer: [String]
+    let correct: Int
     
     init(question: String, answer: [String], correct: Int) {
         self.question = question
