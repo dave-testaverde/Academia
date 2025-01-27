@@ -7,12 +7,12 @@
 
 class Quiz: Decodable, Identifiable {
     let question: String
-    let answer: [String]
+    let answers: [String]
     let correct: Int
     
-    init(question: String, answer: [String], correct: Int) {
+    init(question: String, answers: [String], correct: Int) {
         self.question = question
-        self.answer = answer
+        self.answers = answers
         self.correct = correct
     }
 }

@@ -15,7 +15,7 @@ struct QuizView: View {
         VStack {
             Text(quiz.question)
             List {
-                ForEach(quiz.answer, id: \.self){ answer in
+                ForEach(quiz.answers, id: \.self){ answer in
                     Text ("\(answer)")
                 }
             }
@@ -26,6 +26,6 @@ struct QuizView: View {
 
 #Preview {
     QuizView(
-        quiz: Quiz(question: "?", answer: ["A", "B", "C", "D"], correct: 1)
+        quiz: Quiz(question: "?", answers: ["A", "B", "C", "D"], correct: 1)
     )
 }

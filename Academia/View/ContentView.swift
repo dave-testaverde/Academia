@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         @Bindable var viewModel = viewModel
         
-        HStack {
+        VStack {
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 Task{
