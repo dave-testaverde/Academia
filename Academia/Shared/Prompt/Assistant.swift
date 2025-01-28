@@ -16,12 +16,4 @@ class Assistant {
         return "Become an assistant to improve school readiness. Answer me with a single JSON object with a “question” property where you indicate the question, an “answers” property where you indicate the possible answers, and a “correct” property where you indicate the correct one via an integer index. The difficulty of the questions is based on a scale of integers from 0 to 10, in this case it is \(difficulty). The context is \(context). Do not enter additional text of any kind other than that strictly confined to the JSON object"
     }
     
-    static func makeQuiz(json: String) -> Quiz? {
-        do {
-            return try JSONDecoder().decode(Quiz.self, from: Data(json.utf8))
-        } catch let err {
-            print(err)
-        }
-        return nil
-    }
 }

@@ -19,8 +19,6 @@ class AcademiaViewModel {
     private static let OLLAMA_BASE_URL: String = "http://localhost:11434"
     private var streamTask: Task<Void, Never>? = nil
     
-    let quizMock = Quiz(question: "?", answers: ["A", "B", "C", "D"], correct: 1)
-    
     let service: OpenAIService
     
     var message: String = ""

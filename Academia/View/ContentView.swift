@@ -33,6 +33,18 @@ struct ContentView: View {
             ScrollView {
                 Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
             }
+            
+            if(viewModel.state == .loaded){
+                if(Factory.generateQuiz(from: viewModel.message) != nil){
+                    HStack{
+                        QuizView(
+                            quiz: Factory.generateQuiz(from: viewModel.message)!
+                        )
+                    }
+                } else {
+                    Text("Unable to load JSON")
+                }
+            }
         }
         .padding()
     }

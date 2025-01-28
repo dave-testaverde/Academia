@@ -26,6 +26,6 @@ struct QuizView: View {
 
 #Preview {
     QuizView(
-        quiz: Quiz(question: "?", answers: ["A", "B", "C", "D"], correct: 1)
+        quiz: Factory.quizMock
     )
 }
