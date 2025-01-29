@@ -9,17 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State
-    var viewModel: AcademiaViewModel = AcademiaViewModel()
+    @Environment(AcademiaViewModel.self) var viewModel
+    @Environment(Ollama.self) var ollama
     
     var body: some View {
         @Bindable var viewModel = viewModel
+        @Bindable var ollama = ollama.setViewModel(viewModel: viewModel)
         
         VStack {
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 Task{
-                    await viewModel.testOllama(
+                    await ollama.testOllama(
                         prompt: Assistant.generateQuiz(of: "interview question for android developer")
                     )
                 }
@@ -52,4 +53,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(AcademiaViewModel())
+        .environment(Ollama())
 }

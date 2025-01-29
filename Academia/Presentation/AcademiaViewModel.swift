@@ -16,44 +16,20 @@ enum StateApp {
 
 @Observable
 class AcademiaViewModel {
-    private static let OLLAMA_BASE_URL: String = "http://localhost:11434"
-    private var streamTask: Task<Void, Never>? = nil
-    
-    let service: OpenAIService
-    
     var message: String = ""
     var errorMessage: String = ""
     
     var state: StateApp = .idle
     
-    init(service: OpenAIService = OpenAIServiceFactory.service(baseURL: OLLAMA_BASE_URL)) {
-        self.service = service
+    func rcvMessage(from message: String){
+        self.message += message
     }
     
-    func testOllama(prompt: String = "hello, how are you?") async {
-        onLoading()
-        let parameters = ChatCompletionParameters(messages: [.init(role: .user, content: .text(prompt))], model: .custom("llama3"))
-        try? await startStreamedChat(parameters: parameters)
+    func rcvError(from error: String){
+        self.errorMessage = error
     }
     
-    func startStreamedChat(
-       parameters: ChatCompletionParameters) async throws
-    {
-       streamTask = Task {
-             do {
-                 let stream = try await service.startStreamedChat(parameters: parameters)
-                 for try await result in stream {
-                    let content = result.choices.first?.delta.content ?? ""
-                     self.message += content
-                 }
-             } catch APIError.responseUnsuccessful(let description, let statusCode) {
-                 self.errorMessage = "Network error with status code: \(statusCode) and description: \(description)"
-             } catch {
-                 self.errorMessage = error.localizedDescription
-             }
-             onLoaded()
-       }
-    }
+    /// Events
     
     func onLoaded(){
         self.state = .loaded
@@ -63,9 +39,4 @@ class AcademiaViewModel {
         self.state = .loading
         self.message = ""
     }
-    
-    func cancelStream() {
-       streamTask?.cancel()
-    }
-    
 }
