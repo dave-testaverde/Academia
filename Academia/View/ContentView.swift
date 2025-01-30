@@ -14,13 +14,13 @@ struct ContentView: View {
     
     var body: some View {
         @Bindable var viewModel = viewModel
-        @Bindable var ollama = ollama.setViewModel(viewModel: viewModel)
+        @Bindable var ollama = ollama.configure(viewModel: viewModel)
         
         VStack {
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 Task{
-                    await ollama.testOllama(
+                    await ollama.execute(
                         prompt: Assistant.generateQuiz(of: "interview question for android developer")
                     )
                 }

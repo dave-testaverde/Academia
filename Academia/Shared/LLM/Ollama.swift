@@ -22,13 +22,13 @@ class Ollama {
         self.service = service
     }
     
-    func setViewModel(viewModel: AcademiaViewModel) -> Ollama{
+    func configure(viewModel: AcademiaViewModel) -> Ollama{
         self.viewModel = viewModel
         
         return self
     }
     
-    func testOllama(prompt: String = "hello, how are you?") async {
+    func execute(prompt: String = "hello, how are you?") async {
         self.viewModel!.onLoading()
         let parameters = ChatCompletionParameters(messages: [.init(role: .user, content: .text(prompt))], model: .custom("llama3"))
         try? await startStreamedChat(parameters: parameters)

@@ -11,14 +11,21 @@ struct QuizView: View {
     
     var quiz: Quiz
     
+    @State
+    private var correctVisible: Bool = false
+    
     var body: some View {
         VStack {
             Text(quiz.question)
             List {
                 ForEach(quiz.answers, id: \.self){ answer in
-                    Text ("\(answer)")
+                    Text("\(answer)")
+                        .foregroundStyle(
+                            (correctVisible) ? ((answer == quiz.answers[quiz.correct]) ? .green : .black) : .black
+                        )
                 }
             }
+            Toggle("Show correct answer", isOn: $correctVisible)
         }
         .padding()
     }
