@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizView: View {
     
-    var quiz: Quiz
+    let quiz: Quiz
     
     @State
     private var correctVisible: Bool = false

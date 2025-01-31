@@ -12,11 +12,20 @@ struct ContentView: View {
     @Environment(AcademiaViewModel.self) var viewModel
     @Environment(Ollama.self) var ollama
     
+    @State 
+    private var context: String = ""
+    
     var body: some View {
         @Bindable var viewModel = viewModel
         @Bindable var ollama = ollama.configure(viewModel: viewModel)
         
         VStack {
+            TextField(
+                "Insert topic (e.g. question about geography)",
+                text: $context
+            )
+            .padding()
+            
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 Task{
