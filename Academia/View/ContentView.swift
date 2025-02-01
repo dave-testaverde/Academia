@@ -24,7 +24,14 @@ struct ContentView: View {
                 "Insert topic (e.g. question about geography)",
                 text: $context
             )
-            .padding()
+            .foregroundColor(.blue)
+            .padding(4)
+            .padding(.horizontal, 5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 9)
+                    .stroke(Color.blue, lineWidth: 2)
+            )
+            .padding(.bottom, 5)
             
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
