@@ -13,7 +13,7 @@ struct ContentView: View {
     @Environment(Ollama.self) var ollama
     
     @State 
-    private var context: String = ""
+    private var context: String = "interview question for android developer"
     
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -37,7 +37,7 @@ struct ContentView: View {
             {
                 Task{
                     await ollama.execute(
-                        prompt: Assistant.generateQuiz(of: "interview question for android developer")
+                        prompt: Assistant.generateQuiz(of: context)
                     )
                 }
             }.buttonStyle(BorderlessButtonStyle())
