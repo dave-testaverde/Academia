@@ -35,7 +35,7 @@ struct ContentView: View {
             
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
-                Task{
+                Task {
                     await ollama.execute(
                         prompt: Assistant.generateQuiz(of: context)
                     )
@@ -47,8 +47,19 @@ struct ContentView: View {
                 .background(Color.accentColor)
                 .cornerRadius(12)
             
+            
+            
             ScrollView {
                 Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
+            }
+            
+            if(viewModel.state == .loading){
+                ProgressView {
+                    HStack{
+                        Image(systemName: "ellipsis.message").foregroundStyle(.blue)
+                        Text("Generating quiz..").foregroundStyle(.blue)
+                    }
+                }.controlSize(.large).tint(.blue)
             }
             
             if(viewModel.state == .loaded){
