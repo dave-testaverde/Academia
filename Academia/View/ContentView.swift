@@ -12,8 +12,9 @@ struct ContentView: View {
     @Environment(AcademiaViewModel.self) var viewModel
     @Environment(Ollama.self) var ollama
     
-    @State 
-    private var context: String = "interview question for android developer"
+    @State private var context: String = "interview question for android developer"
+    
+    @State private var difficulty = 1.0
     
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -33,6 +34,16 @@ struct ContentView: View {
             )
             .padding(.bottom, 5)
             
+            VStack {
+                Slider(
+                    value: $difficulty,
+                    in: 1...10,
+                    step: 1
+                )
+                Text("Difficulty \(Int(difficulty))")
+                    .foregroundColor(.blue)
+            }
+            
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 Task {
@@ -46,8 +57,6 @@ struct ContentView: View {
                 .foregroundColor(.white)
                 .background(Color.accentColor)
                 .cornerRadius(12)
-            
-            
             
             ScrollView {
                 Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
