@@ -13,7 +13,6 @@ struct ContentView: View {
     @Environment(Ollama.self) var ollama
     
     @State private var context: String = "interview question for android developer"
-    
     @State private var difficulty = 1.0
     
     var body: some View {
@@ -46,10 +45,12 @@ struct ContentView: View {
             
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
-                Task {
-                    await ollama.execute(
-                        prompt: Assistant.generateQuiz(of: context)
-                    )
+                if(viewModel.state != .loading){
+                    Task {
+                        await ollama.execute(
+                            prompt: Assistant.generateQuiz(of: context, with: Int(difficulty))
+                        )
+                    }
                 }
             }.buttonStyle(BorderlessButtonStyle())
                 .padding(.horizontal, 20)
