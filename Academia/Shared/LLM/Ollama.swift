@@ -7,14 +7,21 @@
 
 import Foundation
 import SwiftOpenAI
+import Combine
 
 @Observable
 class Ollama {
     private static let OLLAMA_BASE_URL: String = "http://localhost:11434"
+    private static let EMBEDDINGS: String = "/api/embed"
+    
     private var streamTask: Task<Void, Never>? = nil
+    
+    let urlSession: URLSession = .shared
     
     let service: OpenAIService
     var viewModel: AcademiaViewModel?
+    
+    var cancellables = Set<AnyCancellable>()
     
     init(
         service: OpenAIService = OpenAIServiceFactory.service(baseURL: OLLAMA_BASE_URL)
@@ -56,4 +63,33 @@ class Ollama {
     func cancelStream() {
        streamTask?.cancel()
     }
+    
+    func createEmbeddings(prompt: String) async {
+        var request = URLRequest(url: URL(string:  Ollama.OLLAMA_BASE_URL + Ollama.EMBEDDINGS)!)
+        request.httpMethod = "POST"
+        let data = try! JSONEncoder().encode(EmbeddingRequest(model: "mxbai-embed-large", input: prompt))
+        request.httpBody = data
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlSession.dataTaskPublisher(for: request)
+            .first()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    ()
+                case .failure(let error):
+                    print("Failed to Send POST Request \(error)")
+                }
+            }, receiveValue: { _, response in
+                let statusCode = (response as! HTTPURLResponse).statusCode
+
+                if statusCode == 200 {
+                    print("200")
+                } else {
+                    print("FAILURE")
+                }
+            })
+            .store(in: &cancellables)
+    }
+
 }
