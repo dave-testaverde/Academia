@@ -73,6 +73,8 @@ class Ollama {
         urlSession.dataTaskPublisher(for: request)
             .first()
             .receive(on: DispatchQueue.main)
+            .tryMap({ return $0.data })
+            .decode(type: Embedding.self, decoder: JSONDecoder())
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -80,14 +82,8 @@ class Ollama {
                 case .failure(let error):
                     print("Failed to Send POST Request \(error)")
                 }
-            }, receiveValue: { _, response in
-                let statusCode = (response as! HTTPURLResponse).statusCode
-
-                if statusCode == 200 {
-                    print("200")
-                } else {
-                    print("FAILURE")
-                }
+            }, receiveValue: { embd in
+                print(embd)
             })
             .store(in: &cancellables)
     }
