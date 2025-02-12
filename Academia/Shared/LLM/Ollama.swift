@@ -64,13 +64,12 @@ class Ollama {
        streamTask?.cancel()
     }
     
+    /// Embeddings functionality
+    
+    static let EMBEDDINGS_MODEL: String = "mxbai-embed-large"
+    
     func createEmbeddings(prompt: String) async {
-        var request = URLRequest(url: URL(string:  Ollama.OLLAMA_BASE_URL + Ollama.EMBEDDINGS)!)
-        request.httpMethod = "POST"
-        let data = try! JSONEncoder().encode(EmbeddingRequest(model: "mxbai-embed-large", input: prompt))
-        request.httpBody = data
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlSession.dataTaskPublisher(for: request)
+        urlSession.dataTaskPublisher(for: requestEmbd(prompt: prompt))
             .first()
             .receive(on: DispatchQueue.main)
             .tryMap({ return $0.data })
@@ -86,6 +85,19 @@ class Ollama {
                 print(embd)
             })
             .store(in: &cancellables)
+    }
+    
+    func requestEmbd(prompt: String) -> URLRequest {
+        var request = URLRequest(
+            url: URL(string:  Ollama.OLLAMA_BASE_URL + Ollama.EMBEDDINGS)!
+        )
+        request.httpMethod = "POST"
+        let data = try! JSONEncoder().encode(
+            EmbeddingRequest(model: Ollama.EMBEDDINGS_MODEL, input: prompt)
+        )
+        request.httpBody = data
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        return request
     }
 
 }
