@@ -68,7 +68,7 @@ class Ollama {
     
     static let EMBEDDINGS_MODEL: String = "mxbai-embed-large"
     
-    func createEmbeddings(prompt: String) async {
+    func createEmbeddings(prompt: String, doc: Int = 1) async {
         urlSession.dataTaskPublisher(for: requestEmbd(prompt: prompt))
             .first()
             .receive(on: DispatchQueue.main)

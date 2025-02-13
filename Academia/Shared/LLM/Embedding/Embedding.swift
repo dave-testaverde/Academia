@@ -17,3 +17,9 @@ struct EmbeddingRequest: Encodable {
     let model: String
     let input: String
 }
+
+struct EmbeddingNode: Encodable {
+    let id: String
+    let embeddings: String
+    let documents: String
+}
