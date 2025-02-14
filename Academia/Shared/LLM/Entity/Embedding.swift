@@ -5,7 +5,7 @@
 //  Created by Dave on 06/02/25.
 //
 
-struct Embedding: Decodable {
+struct EmbeddingResponse: Decodable {
     let model: String
     var embeddings: [[Double]]
     var total_duration: Int
@@ -20,6 +20,6 @@ struct EmbeddingRequest: Encodable {
 
 struct EmbeddingNode: Encodable {
     let id: String
-    let embeddings: String
+    let embeddings: [[Double]]
     let documents: String
 }

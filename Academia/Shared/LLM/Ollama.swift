@@ -21,6 +21,8 @@ class Ollama {
     let service: OpenAIService
     var viewModel: AcademiaViewModel?
     
+    var embeddingsNodes: [EmbeddingNode] = []
+    
     var cancellables = Set<AnyCancellable>()
     
     init(
@@ -68,12 +70,12 @@ class Ollama {
     
     static let EMBEDDINGS_MODEL: String = "mxbai-embed-large"
     
-    func createEmbeddings(prompt: String, doc: Int = 1) async {
+    func createEmbeddings(prompt: String, doc: Int = 1) {
         urlSession.dataTaskPublisher(for: requestEmbd(prompt: prompt))
             .first()
             .receive(on: DispatchQueue.main)
             .tryMap({ return $0.data })
-            .decode(type: Embedding.self, decoder: JSONDecoder())
+            .decode(type: EmbeddingResponse.self, decoder: JSONDecoder())
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
