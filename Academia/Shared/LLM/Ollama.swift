@@ -83,10 +83,19 @@ class Ollama {
                 case .failure(let error):
                     print("Failed to Send POST Request \(error)")
                 }
-            }, receiveValue: { embd in
-                print(embd)
+            }, receiveValue: { [self] embd in
+                registerEmbeddings(embd: embd, doc: doc, prompt: prompt)
             })
             .store(in: &cancellables)
+    }
+    
+    func registerEmbeddings(embd: EmbeddingResponse, doc: Int, prompt: String){
+        embeddingsNodes.append(EmbeddingNode(id: String(doc), embeddings: embd.embeddings, documents: prompt))
+        if(embeddingsNodes.count == sequencies.count) {
+            Task{
+                await onLoadedEmbds()
+            }
+        }
     }
     
     func requestEmbd(prompt: String) -> URLRequest {
@@ -100,6 +109,26 @@ class Ollama {
         request.httpBody = data
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return request
+    }
+    
+    /// RAG
+    
+    let sequencies: [String] = [
+      /*"Llamas are members of the camelid family meaning they're pretty closely related to vicuñas and camels",
+      "Llamas were first domesticated and used as pack animals 4,000 to 5,000 years ago in the Peruvian highlands",
+      "Llamas can grow as much as 6 feet tall though the average llama between 5 feet 6 inches and 5 feet 9 inches tall",
+      "Llamas weigh between 280 and 450 pounds and can carry 25 to 30 percent of their body weight",
+      "Llamas are vegetarians and have very efficient digestive systems",*/
+      "Llamas live to be about 99 years old, though some only live for 11 years and others live to be 22 years old"
+    ]
+    
+    func onLoadedEmbds() async {
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(embeddingsNodes)
+        
+        let embd = String(data: data, encoding: .utf8)!
+        let input = "How long do llamas live?"
+        var prompt: String = "Using this data: \(embd). Respond to this prompt: [\(input)]"
     }
 
 }
