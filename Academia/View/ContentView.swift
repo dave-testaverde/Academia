@@ -43,6 +43,8 @@ struct ContentView: View {
                     .foregroundColor(.blue)
             }
             
+            EmbedderView(viewModel: viewModel)
+            
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
                 if(viewModel.state != .loading){
