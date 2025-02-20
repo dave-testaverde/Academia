@@ -21,6 +21,9 @@ class AcademiaViewModel {
     
     var state: StateApp = .idle
     
+    var enableRAG: Bool = false
+    var context: String = ""
+    
     func rcvMessage(from message: String){
         self.message += message
     }

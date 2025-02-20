@@ -11,17 +11,16 @@ struct EmbedderView: View {
     
     let viewModel: AcademiaViewModel
     
-    @State private var enableRAG: Bool = false
-    @State private var context: String = ""
-    
     var body: some View {
+        @Bindable var viewModel = viewModel
+        
         VStack {
-            Toggle("Enable RAG", isOn: $enableRAG)
+            Toggle("Enable RAG", isOn: $viewModel.enableRAG)
                 .foregroundColor(.blue)
-            if(enableRAG) {
+            if(viewModel.enableRAG) {
                 TextField(
                     "Insert data to embed in prompt",
-                    text: $context
+                    text: $viewModel.context
                 )
                 .foregroundColor(.blue)
                 .padding(4)

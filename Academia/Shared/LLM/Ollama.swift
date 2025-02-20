@@ -34,7 +34,7 @@ class Ollama {
         self.service = service
     }
     
-    func configure(viewModel: AcademiaViewModel) -> Ollama{
+    func configure(viewModel: AcademiaViewModel) -> Ollama {
         self.viewModel = viewModel
         
         return self
