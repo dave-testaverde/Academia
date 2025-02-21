@@ -40,6 +40,21 @@ class Ollama {
         return self
     }
     
+    func onTapGeneration(prompt: String = "hello, how are you?") async throws {
+        guard viewModel != nil else {
+            throw RuntimeError("view-model not configurated")
+        }
+        if(viewModel!.enableRAG){
+            executeWithRAG(prompt: prompt)
+        } else {
+            await execute(prompt: prompt)
+        }
+    }
+    
+    func executeWithRAG(prompt: String = "hello, how are you?"){
+        self.embeddings.genAllEmbds()
+    }
+    
     func execute(prompt: String = "hello, how are you?") async {
         self.viewModel!.onLoading()
         let parameters = ChatCompletionParameters(messages: [.init(role: .user, content: .text(prompt))], model: .custom(Ollama.LLM3_MODEL))

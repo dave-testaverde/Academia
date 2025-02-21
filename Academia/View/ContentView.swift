@@ -49,7 +49,7 @@ struct ContentView: View {
             {
                 if(viewModel.state != .loading){
                     Task {
-                        await ollama.execute(
+                        try await ollama.onTapGeneration(
                             prompt: Assistant.generateQuiz(of: context, with: Int(difficulty))
                         )
                     }
