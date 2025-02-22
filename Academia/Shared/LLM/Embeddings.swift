@@ -9,20 +9,14 @@ import Foundation
 import SwiftOpenAI
 import Combine
 
-class Embeddings {
-    let urlSession: URLSession = .shared
-    var cancellables = Set<AnyCancellable>()
+extension Ollama {
     
-    var embeddingsNodes: [EmbeddingNode] = []
-    
-    let sequencies: [String] = [
-      /*"Llamas are members of the camelid family meaning they're pretty closely related to vicuñas and camels",
-      "Llamas were first domesticated and used as pack animals 4,000 to 5,000 years ago in the Peruvian highlands",
-      "Llamas can grow as much as 6 feet tall though the average llama between 5 feet 6 inches and 5 feet 9 inches tall",
-      "Llamas weigh between 280 and 450 pounds and can carry 25 to 30 percent of their body weight",
-      "Llamas are vegetarians and have very efficient digestive systems",*/
-      "Llamas live to be about 99 years old, though some only live for 11 years and others live to be 22 years old"
-    ]
+    func sequencies() throws -> [String] {
+        guard !viewModel!.contextRAG.isEmpty else {
+            throw RuntimeError("TextField is empty")
+        }
+        return [viewModel!.contextRAG]
+    }
     
     func requestEmbd(prompt: String) -> URLRequest {
         var request = URLRequest(url: URL(string:  Ollama.OLLAMA_BASE_URL + Ollama.EMBEDDINGS)!)
@@ -56,7 +50,14 @@ class Embeddings {
     
     func genAllEmbds() {
         embeddingsNodes = []
-        for (i, s) in sequencies.enumerated() {
+        let docs: [String]
+        do {
+            docs = try sequencies()
+        }
+        catch {
+            return print(error.localizedDescription)
+        }
+        for (i, s) in docs.enumerated() {
             let index = i + 1
             createEmbeddings(prompt: s, doc: index)
         }
@@ -64,7 +65,8 @@ class Embeddings {
     
     func registerEmbeddings(embd: EmbeddingResponse, doc: Int, prompt: String){
         embeddingsNodes.append(EmbeddingNode(id: String(doc), embeddings: embd.embeddings, documents: prompt))
-        if(embeddingsNodes.count == sequencies.count) {
+        let docs = try! sequencies()
+        if(embeddingsNodes.count == docs.count) {
             Task{
                 await onLoadedEmbds()
             }

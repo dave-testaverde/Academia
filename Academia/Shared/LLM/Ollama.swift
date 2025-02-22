@@ -26,7 +26,10 @@ class Ollama {
     let service: OpenAIService
     var viewModel: AcademiaViewModel?
     
-    var embeddings: Embeddings = Embeddings()
+    let urlSession: URLSession = .shared
+    var cancellables = Set<AnyCancellable>()
+    
+    var embeddingsNodes: [EmbeddingNode] = []
     
     init(
         service: OpenAIService = OpenAIServiceFactory.service(baseURL: OLLAMA_BASE_URL)
@@ -52,7 +55,7 @@ class Ollama {
     }
     
     func executeWithRAG(prompt: String = "hello, how are you?"){
-        self.embeddings.genAllEmbds()
+        genAllEmbds()
     }
     
     func execute(prompt: String = "hello, how are you?") async {
