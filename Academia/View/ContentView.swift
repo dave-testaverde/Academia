@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(AcademiaViewModel.self) var viewModel
     @Environment(Ollama.self) var ollama
     
-    @State private var context: String = "interview question for android developer"
+    //@State private var context: String = "interview question for android developer"
     @State private var difficulty = 1.0
     
     var body: some View {
@@ -22,7 +22,7 @@ struct ContentView: View {
         VStack {
             TextField(
                 "Insert topic (e.g. question about geography)",
-                text: $context
+                text: $viewModel.context
             )
             .foregroundColor(.blue)
             .padding(4)
@@ -50,7 +50,7 @@ struct ContentView: View {
                 if(viewModel.state != .loading){
                     Task {
                         try await ollama.onTapGeneration(
-                            prompt: Assistant.generateQuiz(of: context, with: Int(difficulty))
+                            prompt: Assistant.generateQuiz(of: viewModel.context, with: Int(difficulty))
                         )
                     }
                 }

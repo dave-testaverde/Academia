@@ -76,7 +76,7 @@ extension Ollama {
     func onLoadedEmbds() async {
         let data = try! JSONEncoder().encode(embeddingsNodes)
         
-        let input = "How long do llamas live?"
+        let input = viewModel!.context
         let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt: [\(input)]"
         
         createPrompt(prompt: prompt)
