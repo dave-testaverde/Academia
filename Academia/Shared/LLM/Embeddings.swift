@@ -49,12 +49,12 @@ extension Ollama {
     }
     
     func genAllEmbds() {
+        viewModel!.onLoading()
         embeddingsNodes = []
         let docs: [String]
         do {
             docs = try sequencies()
-        }
-        catch {
+        } catch {
             return print(error.localizedDescription)
         }
         for (i, s) in docs.enumerated() {
@@ -67,7 +67,7 @@ extension Ollama {
         embeddingsNodes.append(EmbeddingNode(id: String(doc), embeddings: embd.embeddings, documents: prompt))
         let docs = try! sequencies()
         if(embeddingsNodes.count == docs.count) {
-            Task{
+            Task {
                 await onLoadedEmbds()
             }
         }
@@ -80,6 +80,8 @@ extension Ollama {
         let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt: [\(input)]"
         
         createPrompt(prompt: prompt)
+        
+        viewModel!.onLoaded()
     }
     
     func createPrompt(prompt: String) {
@@ -89,9 +91,8 @@ extension Ollama {
                 for: requestGeneration(prompt: prompt),
                 delegate: session.delegate as? URLSessionTaskDelegate
             )
-            
             for try await line in data.lines {
-                do{
+                do {
                     let gen: GenerationResponse = try JSONDecoder().decode(GenerationResponse.self, from: line.data(using: .utf8)!)
                     print(gen.response)
                 } catch {
