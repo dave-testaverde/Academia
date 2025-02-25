@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftOpenAI
 import Combine
+import SwiftOpenAI
 
 extension Ollama {
     
@@ -15,7 +15,7 @@ extension Ollama {
         guard !viewModel!.contextRAG.isEmpty else {
             throw RuntimeError("TextField is empty")
         }
-        return [viewModel!.contextRAG]
+        return viewModel!.contextRAG.components(separatedBy: ".")
     }
     
     func requestEmbd(prompt: String) -> URLRequest {
@@ -37,10 +37,10 @@ extension Ollama {
             .decode(type: EmbeddingResponse.self, decoder: JSONDecoder())
             .sink(receiveCompletion: { completion in
                 switch completion {
-                case .finished:
-                    ()
-                case .failure(let error):
-                    print("Failed to Send POST Request \(error)")
+                    case .finished:
+                        ()
+                    case .failure(let error):
+                        print("Failed to Send POST Request \(error)")
                 }
             }, receiveValue: { [self] embd in
                 registerEmbeddings(embd: embd, doc: doc, prompt: prompt)
