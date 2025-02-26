@@ -20,8 +20,10 @@ struct EmbedderView: View {
             if(viewModel.enableRAG) {
                 TextField(
                     "Insert data to embed in prompt",
-                    text: $viewModel.contextRAG
+                    text: $viewModel.contextRAG,
+                    axis: .vertical
                 )
+                .lineLimit(3...10)
                 .foregroundColor(.blue)
                 .padding(4)
                 .padding(.horizontal, 5)
