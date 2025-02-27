@@ -76,7 +76,7 @@ extension Ollama {
     func onLoadedEmbds() async {
         let data = try! JSONEncoder().encode(embeddingsNodes)
         
-        let input = viewModel!.context
+        let input = Assistant.generateQuiz(of: viewModel!.prompt.context, with: Int(viewModel!.prompt.difficulty))
         let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt: [\(input)]"
         
         createPrompt(prompt: prompt)

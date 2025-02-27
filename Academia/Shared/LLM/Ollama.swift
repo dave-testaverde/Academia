@@ -43,24 +43,32 @@ class Ollama {
         return self
     }
     
-    func onTapGeneration(prompt: String = "hello, how are you?") async throws {
+    func onTapGeneration() async throws {
         guard viewModel != nil else {
             throw RuntimeError("view-model not configurated")
         }
         if(viewModel!.enableRAG){
-            executeWithRAG(prompt: prompt)
+            executeWithRAG()
         } else {
-            await execute(prompt: prompt)
+            await execute()
         }
     }
     
-    func executeWithRAG(prompt: String = "hello, how are you?"){
+    func executeWithRAG(){
         genAllEmbds()
     }
     
-    func execute(prompt: String = "hello, how are you?") async {
+    func execute() async {
         self.viewModel!.onLoading()
-        let parameters = ChatCompletionParameters(messages: [.init(role: .user, content: .text(prompt))], model: .custom(Ollama.LLM3_MODEL))
+        let parameters = ChatCompletionParameters(
+            messages: [
+                .init(
+                    role: .user,
+                    content: .text(Assistant.generateQuiz(of: viewModel!.prompt.context, with: Int(viewModel!.prompt.difficulty)))
+                )
+            ],
+            model: .custom(Ollama.LLM3_MODEL)
+        )
         try? await startStreamedChat(parameters: parameters)
     }
     

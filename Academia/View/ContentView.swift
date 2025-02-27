@@ -22,7 +22,7 @@ struct ContentView: View {
         VStack {
             TextField(
                 "Insert topic (e.g. question about geography)",
-                text: $viewModel.context
+                text: $viewModel.prompt.context
             )
             .foregroundColor(.blue)
             .padding(4)
@@ -35,7 +35,7 @@ struct ContentView: View {
             
             VStack {
                 Slider(
-                    value: $difficulty,
+                    value: $viewModel.prompt.difficulty,
                     in: 1...10,
                     step: 1
                 )
@@ -49,9 +49,7 @@ struct ContentView: View {
             {
                 if(viewModel.state != .loading){
                     Task {
-                        try await ollama.onTapGeneration(
-                            prompt: Assistant.generateQuiz(of: viewModel.context, with: Int(difficulty))
-                        )
+                        try await ollama.onTapGeneration()
                     }
                 }
             }.buttonStyle(BorderlessButtonStyle())

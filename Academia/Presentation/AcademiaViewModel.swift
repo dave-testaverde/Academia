@@ -21,7 +21,7 @@ class AcademiaViewModel {
     
     var state: StateApp = .idle
     
-    var context: String = "How long do llamas live?"
+    var prompt: Prompt = Prompt(difficulty: 1.0, context: "How long do llamas live?")
     
     var enableRAG: Bool = false
     var contextRAG: String = "Llamas live to be about 21 years old, though some only live for 16 years and others live to be 31 years old"
