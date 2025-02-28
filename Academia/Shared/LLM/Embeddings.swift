@@ -77,7 +77,7 @@ extension Ollama {
         let data = try! JSONEncoder().encode(embeddingsNodes)
         
         let input = Assistant.generateQuiz(of: viewModel!.prompt.context, with: Int(viewModel!.prompt.difficulty))
-        let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt: [\(input)]"
+        let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond only with a JSON object by running this prompt: [\(input)]"
         
         createPrompt(prompt: prompt)
         
@@ -94,7 +94,7 @@ extension Ollama {
             for try await line in data.lines {
                 do {
                     let gen: GenerationResponse = try JSONDecoder().decode(GenerationResponse.self, from: line.data(using: .utf8)!)
-                    print(gen.response)
+                    viewModel!.rcvMessage(from: gen.response)
                 } catch {
                     print("not decodable")
                 }
