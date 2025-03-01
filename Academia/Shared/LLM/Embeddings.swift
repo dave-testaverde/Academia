@@ -80,8 +80,6 @@ extension Ollama {
         let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond only with a JSON object by running this prompt: [\(input)]"
         
         createPrompt(prompt: prompt)
-        
-        viewModel!.onLoaded()
     }
     
     func createPrompt(prompt: String) {
@@ -99,6 +97,7 @@ extension Ollama {
                     print("not decodable")
                 }
             }
+            viewModel!.onLoaded()
         }
     }
     

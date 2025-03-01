@@ -12,7 +12,6 @@ struct ContentView: View {
     @Environment(AcademiaViewModel.self) var viewModel
     @Environment(Ollama.self) var ollama
     
-    //@State private var context: String = "interview question for android developer"
     @State private var difficulty = 1.0
     
     var body: some View {
