@@ -9,14 +9,13 @@ import SwiftUI
 import PDFKit
 
 struct PDFReaderView: View {
-    // You need to add sample pdf in the app bundle.
-    // Just drag and drop a pdf to the project.
-    // Otherwise app will crash
     let url = Bundle.main.url(forResource: "data_llama", withExtension: "pdf")!
 
     var body: some View {
-         PDFKitView(url:  url)
-                 
+        VStack{
+            PDFKitView(url:  url)
+            Text(PDF2text(url: url))
+        }
     }
 }
 
@@ -31,9 +30,21 @@ struct PDFKitView: UIViewRepresentable {
         return pdfView
     }
     
-    func updateUIView(_ pdfView: PDFView, context: Context) {
-        // Update pdf if needed
+    func updateUIView(_ pdfView: PDFView, context: Context) {}
+}
+
+func PDF2text(url: URL) -> String {
+    var documentContent = ""
+    if let pdf = PDFDocument(url: url) {
+        let pageCount = pdf.pageCount
+
+        for i in 0 ..< pageCount {
+            guard let page = pdf.page(at: i) else { continue }
+            guard let pageContent = page.attributedString else { continue }
+            documentContent += pageContent.string
+        }
     }
+    return documentContent
 }
 
 #Preview {
