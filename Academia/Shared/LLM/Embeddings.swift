@@ -15,7 +15,12 @@ extension Ollama {
         guard !viewModel!.contextRAG.isEmpty else {
             throw RuntimeError("TextField is empty")
         }
-        return viewModel!.contextRAG.components(separatedBy: ".")
+        let docs = PDF2text()
+        guard !docs.isEmpty else {
+            throw RuntimeError("No documents loaded")
+        }
+        var res: [String] = viewModel!.contextRAG.appending(docs).components(separatedBy: ".").dropLast()
+        return res
     }
     
     func requestEmbd(prompt: String) -> URLRequest {

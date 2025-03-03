@@ -33,20 +33,6 @@ struct PDFKitView: UIViewRepresentable {
     func updateUIView(_ pdfView: PDFView, context: Context) {}
 }
 
-func PDF2text(url: URL) -> String {
-    var documentContent = ""
-    if let pdf = PDFDocument(url: url) {
-        let pageCount = pdf.pageCount
-
-        for i in 0 ..< pageCount {
-            guard let page = pdf.page(at: i) else { continue }
-            guard let pageContent = page.attributedString else { continue }
-            documentContent += pageContent.string
-        }
-    }
-    return documentContent
-}
-
 #Preview {
     PDFReaderView()
 }
