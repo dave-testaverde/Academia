@@ -32,6 +32,8 @@ struct EmbedderView: View {
                         .stroke(Color.blue, lineWidth: 2)
                 )
                 .padding(.bottom, 5)
+                Toggle("Enable Docs", isOn: $viewModel.enableDocs)
+                    .foregroundColor(.blue)
             }
         }
         .padding()

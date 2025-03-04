@@ -19,8 +19,10 @@ extension Ollama {
         guard !docs.isEmpty else {
             throw RuntimeError("No documents loaded")
         }
-        var res: [String] = viewModel!.contextRAG.appending(docs).components(separatedBy: ".").dropLast()
-        return res
+        return viewModel!.contextRAG
+            .appending(docs)
+            .components(separatedBy: ".")
+            .dropLast()
     }
     
     func requestEmbd(prompt: String) -> URLRequest {
@@ -82,7 +84,7 @@ extension Ollama {
         let data = try! JSONEncoder().encode(embeddingsNodes)
         
         let input = Assistant.generateQuiz(of: viewModel!.prompt.context, with: Int(viewModel!.prompt.difficulty))
-        let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond only with a JSON object by running this prompt: [\(input)]"
+        let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt using JSON as the only template: [\(input)]"
         
         createPrompt(prompt: prompt)
     }

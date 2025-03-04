@@ -26,6 +26,8 @@ class AcademiaViewModel {
     var enableRAG: Bool = false
     var contextRAG: String = "Llamas live to be about 21 years old, though some only live for 16 years and others live to be 31 years old"
     
+    var enableDocs: Bool = false
+    
     func rcvMessage(from message: String){
         self.message += message
     }
