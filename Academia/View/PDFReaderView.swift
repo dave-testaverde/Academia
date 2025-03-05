@@ -14,7 +14,6 @@ struct PDFReaderView: View {
     var body: some View {
         VStack{
             PDFKitView(url:  url)
-            Text(PDF2text(url: url))
         }
     }
 }

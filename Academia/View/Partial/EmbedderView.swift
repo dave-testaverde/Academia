@@ -11,6 +11,8 @@ struct EmbedderView: View {
     
     let viewModel: AcademiaViewModel
     
+    @State private var showModal = false
+    
     var body: some View {
         @Bindable var viewModel = viewModel
         
@@ -34,6 +36,11 @@ struct EmbedderView: View {
                 .padding(.bottom, 5)
                 Toggle("Enable Docs", isOn: $viewModel.enableDocs)
                     .foregroundColor(.blue)
+                if(viewModel.enableDocs) {
+                    Button("Show default docs") {
+                      showModal = true
+                    }
+                }
             }
         }
         .padding()
