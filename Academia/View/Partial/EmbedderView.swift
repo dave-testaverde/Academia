@@ -40,6 +40,9 @@ struct EmbedderView: View {
                     Button("Show default docs") {
                       showModal = true
                     }
+                    .sheet(isPresented: $showModal) {
+                        PDFReaderView()
+                    }
                 }
             }
         }
