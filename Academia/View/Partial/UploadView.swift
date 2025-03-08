@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct UploadView : View {
+    
+    @Environment(AcademiaViewModel.self) var viewModel
     @State private var presentImporter = false
     
     var body: some View {
+        @Bindable var viewModel = viewModel
         Button("Upload PDF") {
             presentImporter = true
         }.fileImporter(isPresented: $presentImporter, allowedContentTypes: [.pdf]) { result in
-            print(result)
+            switch result {
+                case .success(let url):
+                    print("file uploaded: \(url)")
+                case .failure(let error):
+                    print(error)
+            }
         }
     }
 }
