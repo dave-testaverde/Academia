@@ -28,6 +28,8 @@ class AcademiaViewModel {
     
     var enableDocs: Bool = false
     
+    var pdfFileUrl: URL?
+    
     func rcvMessage(from message: String){
         self.message += message
     }

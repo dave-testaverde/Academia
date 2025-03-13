@@ -14,14 +14,20 @@ struct UploadView : View {
     
     var body: some View {
         @Bindable var viewModel = viewModel
-        Button("Upload PDF") {
-            presentImporter = true
-        }.fileImporter(isPresented: $presentImporter, allowedContentTypes: [.pdf]) { result in
-            switch result {
+        HStack{
+            Button("Upload PDF") {
+                presentImporter = true
+            }.fileImporter(isPresented: $presentImporter, allowedContentTypes: [.pdf]) { result in
+                switch result {
                 case .success(let url):
                     print("file uploaded: \(url)")
+                    viewModel.pdfFileUrl = url
                 case .failure(let error):
                     print(error)
+                }
+            }
+            if(viewModel.pdfFileUrl != nil){
+                Text(viewModel.pdfFileUrl!.lastPathComponent)
             }
         }
     }
