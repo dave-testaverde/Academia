@@ -9,8 +9,7 @@ import SwiftUI
 
 struct EmbedderView: View {
     
-    let viewModel: AcademiaViewModel
-    
+    @Environment(AcademiaViewModel.self) var viewModel
     @State private var showModal = false
     
     var body: some View {
@@ -51,7 +50,6 @@ struct EmbedderView: View {
 }
 
 #Preview {
-    EmbedderView(
-        viewModel: AcademiaViewModel()
-    )
+    EmbedderView()
+        .environment(AcademiaViewModel())
 }

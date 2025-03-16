@@ -35,4 +35,5 @@ struct UploadView : View {
 
 #Preview {
     UploadView()
+        .environment(AcademiaViewModel())
 }
