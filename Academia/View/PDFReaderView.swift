@@ -12,7 +12,7 @@ struct PDFReaderView: View {
     let url = Bundle.main.url(forResource: "data_llama", withExtension: "pdf")!
 
     var body: some View {
-        VStack{
+        VStack {
             PDFKitView(url:  url)
         }
     }

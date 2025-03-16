@@ -12,7 +12,7 @@ import SwiftUI
 struct AcademiaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UploadView()
                 .environment(AcademiaViewModel())
                 .environment(Ollama())
         }
