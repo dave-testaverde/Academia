@@ -12,6 +12,8 @@ struct UploadView : View {
     @Environment(AcademiaViewModel.self) var viewModel
     @State private var presentImporter = false
     
+    @State private var showModal = false
+    
     var body: some View {
         @Bindable var viewModel = viewModel
         HStack{
@@ -33,9 +35,16 @@ struct UploadView : View {
             .background(Color.accentColor)
             .cornerRadius(12)
             
-            if(viewModel.pdfFileUrl != nil){
-                Text(viewModel.pdfFileUrl!.lastPathComponent)
-                    .foregroundColor(.blue)
+            if(viewModel.pdfFileUrl != nil) {
+                Button(viewModel.pdfFileUrl!.lastPathComponent){
+                    showModal = true
+                }
+                .disabled(!viewModel.pdfFileUrl!.startAccessingSecurityScopedResource())
+                .sheet(isPresented: $showModal) {
+                    PDFReaderView(
+                        url: viewModel.pdfFileUrl!
+                    )
+                }
             }
         }
     }
