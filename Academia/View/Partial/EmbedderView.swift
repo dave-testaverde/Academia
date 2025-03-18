@@ -19,28 +19,33 @@ struct EmbedderView: View {
             Toggle("Enable RAG", isOn: $viewModel.enableRAG)
                 .foregroundColor(.blue)
             if(viewModel.enableRAG) {
-                TextField(
-                    "Insert data to embed in prompt",
-                    text: $viewModel.contextRAG,
-                    axis: .vertical
-                )
-                .lineLimit(3...10)
-                .foregroundColor(.blue)
-                .padding(4)
-                .padding(.horizontal, 5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 9)
-                        .stroke(Color.blue, lineWidth: 2)
-                )
-                .padding(.bottom, 5)
+                if(!viewModel.enableDocs){
+                    TextField(
+                        "Insert data to embed in prompt",
+                        text: $viewModel.contextRAG,
+                        axis: .vertical
+                    )
+                    .lineLimit(3...10)
+                    .foregroundColor(.blue)
+                    .padding(4)
+                    .padding(.horizontal, 5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 9)
+                            .stroke(Color.blue, lineWidth: 2)
+                    )
+                    .padding(.bottom, 5)
+                }
                 Toggle("Enable Docs", isOn: $viewModel.enableDocs)
                     .foregroundColor(.blue)
                 if(viewModel.enableDocs) {
-                    Button("Show default docs") {
-                      showModal = true
-                    }
-                    .sheet(isPresented: $showModal) {
-                        PDFReaderView()
+                    VStack{
+                        Button("Show default docs") {
+                            showModal = true
+                        }
+                        .sheet(isPresented: $showModal) {
+                            PDFReaderView()
+                        }
+                        UploadView()
                     }
                 }
             }
