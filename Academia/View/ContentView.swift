@@ -82,6 +82,12 @@ struct ContentView: View {
                     Text("Unable to load JSON")
                 }
             }
+            
+            VStack {}
+                .sheet(item: $viewModel.getUploadError) { error in
+                    Text(error.localizedDescription)
+            }
+            
         }
         .padding()
     }

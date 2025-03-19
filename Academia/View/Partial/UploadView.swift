@@ -23,9 +23,13 @@ struct UploadView : View {
                 switch result {
                     case .success(let url):
                         print("file uploaded: \(url)")
+                        let gotAccess = url.startAccessingSecurityScopedResource()
+                        if !gotAccess { return }
                         viewModel.pdfFileUrl = url
+                        url.stopAccessingSecurityScopedResource()
                     case .failure(let error):
                         print(error)
+                        viewModel.getUploadError = GetUploadError.error(cause: error.localizedDescription)
                 }
             }
             .buttonStyle(BorderlessButtonStyle())
@@ -38,9 +42,7 @@ struct UploadView : View {
             if(viewModel.pdfFileUrl != nil) {
                 Button(viewModel.pdfFileUrl!.lastPathComponent){
                     showModal = true
-                }
-                .disabled(!viewModel.pdfFileUrl!.startAccessingSecurityScopedResource())
-                .sheet(isPresented: $showModal) {
+                }.sheet(isPresented: $showModal) {
                     PDFReaderView(
                         url: viewModel.pdfFileUrl!
                     )

@@ -8,7 +8,9 @@
 import Foundation
 import PDFKit
 
-func PDF2text(url: URL = Bundle.main.url(forResource: "data_llama", withExtension: "pdf")!) -> String {
+let DEFAULT_DOC: URL = Bundle.main.url(forResource: "data_llama", withExtension: "pdf")!
+
+func PDF2text(url: URL = DEFAULT_DOC) -> String {
     var documentContent = ""
     if let pdf = PDFDocument(url: url) {
         let pageCount = pdf.pageCount

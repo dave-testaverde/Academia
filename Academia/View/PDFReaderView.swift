@@ -9,7 +9,7 @@ import SwiftUI
 import PDFKit
 
 struct PDFReaderView: View {
-    var url = Bundle.main.url(forResource: "data_llama", withExtension: "pdf")!
+    var url = DEFAULT_DOC
 
     var body: some View {
         VStack {

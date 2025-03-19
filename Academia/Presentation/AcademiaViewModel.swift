@@ -17,7 +17,8 @@ enum StateApp {
 @Observable
 class AcademiaViewModel {
     var message: String = ""
-    var errorMessage: String = ""
+    
+    var getUploadError: GetUploadError?
     
     var state: StateApp = .idle
     
@@ -32,10 +33,6 @@ class AcademiaViewModel {
     
     func rcvMessage(from message: String){
         self.message += message
-    }
-    
-    func rcvError(from error: String){
-        self.errorMessage = error
     }
     
     /// Events
