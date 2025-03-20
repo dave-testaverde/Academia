@@ -1,5 +1,5 @@
 //
-//  GetUploadError.swift
+//  GetDecodingError.swift
 //  Academia
 //
 //  Created by Dave on 19/03/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GetUploadError: AppError {
+enum GetDecodingError: AppError {
     var id: Self { self }
     
     case error(cause: String)
