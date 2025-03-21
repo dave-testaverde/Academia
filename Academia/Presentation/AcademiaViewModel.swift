@@ -19,6 +19,7 @@ class AcademiaViewModel {
     var message: String = ""
     
     var getUploadError: GetUploadError?
+    var getDecodingError: GetDecodingError?
     
     var state: StateApp = .idle
     

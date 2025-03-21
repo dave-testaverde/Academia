@@ -86,6 +86,8 @@ struct ContentView: View {
             VStack {}
                 .sheet(item: $viewModel.getUploadError) { error in
                     Text(error.localizedDescription)
+                .sheet(item: $viewModel.getDecodingError) { error in
+                    Text(error.localizedDescription)
             }
             
         }
