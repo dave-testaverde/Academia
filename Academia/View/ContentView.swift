@@ -72,10 +72,10 @@ struct ContentView: View {
             }
             
             if(viewModel.state == .loaded){
-                if(Factory.generateQuiz(from: viewModel.message) != nil){
+                if(Factory.generateQuiz(from: viewModel.message, viewModel: viewModel) != nil){
                     HStack{
                         QuizView(
-                            quiz: Factory.generateQuiz(from: viewModel.message)!
+                            quiz: Factory.generateQuiz(from: viewModel.message, viewModel: viewModel)!
                         )
                     }
                 } else {
