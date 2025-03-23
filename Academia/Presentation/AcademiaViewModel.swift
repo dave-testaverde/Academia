@@ -20,6 +20,7 @@ class AcademiaViewModel {
     
     var getUploadError: GetUploadError?
     var getDecodingError: GetDecodingError?
+    var getNetworkError: GetNetworkError?
     
     var state: StateApp = .idle
     
