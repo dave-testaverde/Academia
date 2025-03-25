@@ -28,6 +28,7 @@ struct QuizView: View {
             Toggle("Show correct answer", isOn: $correctVisible)
         }
         .padding()
+        .frame(minHeight: 300)
     }
 }
 
