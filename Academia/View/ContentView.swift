@@ -12,8 +12,6 @@ struct ContentView: View {
     @Environment(AcademiaViewModel.self) var viewModel
     @Environment(Ollama.self) var ollama
     
-    @State private var difficulty = 1.0
-    
     var body: some View {
         @Bindable var viewModel = viewModel
         @Bindable var ollama = ollama.configure(viewModel: viewModel)
@@ -38,11 +36,13 @@ struct ContentView: View {
                     in: 1...10,
                     step: 1
                 )
-                Text("Difficulty \(Int(difficulty))")
+                Text("Difficulty \(Int(viewModel.prompt.difficulty))")
                     .foregroundColor(.blue)
             }
             
             EmbedderView()
+            
+            Divider().background(.blue).padding(.bottom, 15)
             
             Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
             {
@@ -57,9 +57,12 @@ struct ContentView: View {
                 .foregroundColor(.white)
                 .background(Color.accentColor)
                 .cornerRadius(12)
+                .padding(.bottom, 10)
             
-            ScrollView {
-                Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
+            HStack{
+                ScrollView {
+                    Text((viewModel.message.isEmpty) ? "" : ">> \(viewModel.message)")
+                }
             }
             
             if(viewModel.state == .loading){
@@ -83,16 +86,25 @@ struct ContentView: View {
                 }
             }
             
-            VStack {}
+            /*VStack {}
             .sheet(item: $viewModel.getUploadError) { error in
                 Text(error.localizedDescription)
+                    .onAppear {
+                        viewModel.onError(err: error)
+                    }
             }
             .sheet(item: $viewModel.getDecodingError) { error in
                 Text(error.localizedDescription)
+                    .onAppear {
+                        viewModel.onError(err: error)
+                    }
             }
             .sheet(item: $viewModel.getNetworkError) { error in
                 Text(error.localizedDescription)
-            }
+                    .onAppear {
+                        viewModel.onError(err: error)
+                    }
+            }*/
             
         }
         .padding()

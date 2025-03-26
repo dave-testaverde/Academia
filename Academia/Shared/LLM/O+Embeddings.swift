@@ -84,7 +84,11 @@ extension Ollama {
         let data = try! JSONEncoder().encode(embeddingsNodes)
         
         let input = Assistant.generateQuiz(of: viewModel!.prompt.context, with: Int(viewModel!.prompt.difficulty))
-        let prompt: String = "Using this data: \(String(data: data, encoding: .utf8)!). Respond to this prompt using JSON as the only template: [\(input)]"
+        let prompt: String =
+            "Using this data: \(String(data: data, encoding: .utf8)!)." +
+            "Respond to this prompt using JSON as the only template: [\(input)]. " +
+            "The template for your response should be a JSON object." +
+            "Do not enter additional text of any kind other than that strictly confined to the JSON object"
         
         createPrompt(prompt: prompt)
     }
