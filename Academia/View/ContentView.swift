@@ -44,20 +44,20 @@ struct ContentView: View {
             
             Divider().background(.blue).padding(.bottom, 15)
             
-            Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles")
-            {
+            Button("Generate with OLLAMA 3", systemImage: "lasso.badge.sparkles"){
                 if(viewModel.state != .loading){
                     Task {
                         try await ollama.onTapGeneration()
                     }
                 }
-            }.buttonStyle(BorderlessButtonStyle())
-                .padding(.horizontal, 20)
-                .padding(.vertical, 7)
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .cornerRadius(12)
-                .padding(.bottom, 10)
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            .padding(.horizontal, 20)
+            .padding(.vertical, 7)
+            .foregroundColor(.white)
+            .background(Color.accentColor)
+            .cornerRadius(12)
+            .padding(.bottom, 10)
             
             HStack{
                 ScrollView {
@@ -86,28 +86,26 @@ struct ContentView: View {
                 }
             }
             
-            /*VStack {}
-            .sheet(item: $viewModel.getUploadError) { error in
-                Text(error.localizedDescription)
-                    .onAppear {
-                        viewModel.onError(err: error)
+            VStack {}
+            .sheet(isPresented: $viewModel.onError, onDismiss: didDismiss) {
+                VStack {
+                    Text("Error occured!")
+                        .font(.title)
+                        .padding(50)
+                    Text(viewModel.errorMsg)
+                        .padding(50)
+                    HStack(alignment: VerticalAlignment.center) {
+                        Button("Close", action: didDismiss)
                     }
+                }
             }
-            .sheet(item: $viewModel.getDecodingError) { error in
-                Text(error.localizedDescription)
-                    .onAppear {
-                        viewModel.onError(err: error)
-                    }
-            }
-            .sheet(item: $viewModel.getNetworkError) { error in
-                Text(error.localizedDescription)
-                    .onAppear {
-                        viewModel.onError(err: error)
-                    }
-            }*/
-            
         }
         .padding()
+    }
+    
+    func didDismiss() {
+        // Handle the dismissing action.
+        viewModel.onError = false
     }
 }
 

@@ -16,13 +16,16 @@ enum StateApp {
 
 @Observable
 class AcademiaViewModel {
+    var state: StateApp = .idle
+    
     var message: String = ""
     
     var getUploadError: GetUploadError?
     var getDecodingError: GetDecodingError?
     var getNetworkError: GetNetworkError?
     
-    var state: StateApp = .idle
+    var errorMsg: String = ""
+    var onError: Bool = false
     
     var prompt: Prompt = Prompt(difficulty: 1.0, context: "How long do llamas live?")
     
@@ -40,11 +43,20 @@ class AcademiaViewModel {
     /// Events
     
     func onLoaded(){
+        print("Status change: onLoaded")
         self.state = .loaded
     }
     
     func onLoading(){
         self.state = .loading
         self.message = ""
+    }
+    
+    func onError(err: any AppError) {
+        self.errorMsg = err.localizedDescription
+        self.onError = true
+        
+        /// debug
+        print("[Error] \(type(of: err))")
     }
 }
