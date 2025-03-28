@@ -28,8 +28,7 @@ struct UploadView : View {
                         viewModel.pdfFileUrl = url
                         url.stopAccessingSecurityScopedResource()
                     case .failure(let error):
-                        print(error)
-                        viewModel.getUploadError = GetUploadError.error(cause: error.localizedDescription)
+                        viewModel.onError(err: GetUploadError.error(cause: error.localizedDescription))
                 }
             }
             .buttonStyle(BorderlessButtonStyle())

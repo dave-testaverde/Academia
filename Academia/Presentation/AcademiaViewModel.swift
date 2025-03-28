@@ -20,10 +20,6 @@ class AcademiaViewModel {
     
     var message: String = ""
     
-    var getUploadError: GetUploadError?
-    var getDecodingError: GetDecodingError?
-    var getNetworkError: GetNetworkError?
-    
     var errorMsg: String = ""
     var onError: Bool = false
     

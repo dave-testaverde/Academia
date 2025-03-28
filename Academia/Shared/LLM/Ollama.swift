@@ -83,9 +83,9 @@ class Ollama {
                      self.viewModel!.rcvMessage(from: content)
                  }
              } catch APIError.responseUnsuccessful(let description, let statusCode) {
-                 self.viewModel!.getNetworkError = GetNetworkError.error(cause: "Network error with status code: \(statusCode) and description: \(description)")
+                 self.viewModel!.onError(err: GetNetworkError.error(cause: "Network error with status code: \(statusCode) and description: \(description)"))
              } catch {
-                 self.viewModel!.getNetworkError = GetNetworkError.error(cause: error.localizedDescription)
+                 self.viewModel!.onError(err: GetNetworkError.error(cause: error.localizedDescription))
              }
              self.viewModel!.onLoaded()
        }

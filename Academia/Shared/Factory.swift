@@ -14,7 +14,7 @@ class Factory {
         do {
             return try JSONDecoder().decode(Quiz.self, from: Data(json.utf8))
         } catch let err {
-            viewModel.getDecodingError = GetDecodingError.error(cause: err.localizedDescription)
+            viewModel.onError(err: GetDecodingError.error(cause: err.localizedDescription))
             print(err)
         }
         return nil
