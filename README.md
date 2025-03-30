@@ -4,10 +4,10 @@ Learning App using LLM Ollama with SwiftUI, MVVM and SwiftOpenAI
 ## Use case
 
 The app generates multiple-choice quizzes based on the text and documents information provided, leveraging OLLAMA generative AI
+
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
+<img src="https://github.com/dave-testaverde/Academia/blob/main/screen/01.png" alt="Home Screen" width="200"> <img src="https://github.com/dave-testaverde/Academia/blob/main/screen/02.png" alt="Generative Screen" width="200"> <img src="https://github.com/dave-testaverde/Academia/blob/main/screen/03.png" alt="RAG Screen" width="200"> <img src="https://github.com/dave-testaverde/Academia/blob/main/screen/04.png" alt="RAG Docs Screen" width="200"> 
 
 ## Requirements
 
@@ -41,4 +41,3 @@ Test embeddings model
     "input": "Llamas are members of the camelid family"
   }'
 ```
-    
