@@ -18,7 +18,7 @@ final class AcademiaViewModelTests: XCTestCase {
     
     // MARK: - Helpers
     
-    /// make System Under Test
+    /// system under test maker
     @MainActor
     private func makeSUT(
         viewModel: AcademiaViewModel,
@@ -27,6 +27,9 @@ final class AcademiaViewModelTests: XCTestCase {
         checkMemoryLeaks: Bool = true
     ) -> AcademiaViewModel {
         let sut = viewModel
+        if(checkMemoryLeaks){
+            trackForMemoryLeaks(sut, file: file, line: line)
+        }
         return sut
     }
     
