@@ -16,6 +16,16 @@ final class AcademiaViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, .idle)
     }
     
+    @MainActor
+    func testViewModel_whenOnCreate_onDecodingErrorOccurred() async {
+        let errorLabel = "test"
+        
+        let sut = makeSUT(viewModel: AcademiaViewModel())
+        sut.onError(err: GetDecodingError.error(cause: errorLabel))
+        XCTAssertTrue(sut.onError)
+        XCTAssertEqual(sut.errorMsg, errorLabel)
+    }
+    
     // MARK: - Helpers
     
     /// system under test maker
