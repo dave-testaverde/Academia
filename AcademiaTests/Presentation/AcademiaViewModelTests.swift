@@ -26,6 +26,16 @@ final class AcademiaViewModelTests: XCTestCase {
         XCTAssertEqual(sut.errorMsg, errorLabel)
     }
     
+    @MainActor
+    func testViewModel_whenOnCreate_onNetworkErrorOccurred() async {
+        let errorLabel = "test"
+        
+        let sut = makeSUT(viewModel: AcademiaViewModel())
+        sut.onError(err: GetNetworkError.error(cause: errorLabel))
+        XCTAssertTrue(sut.onError)
+        XCTAssertEqual(sut.errorMsg, errorLabel)
+    }
+    
     // MARK: - Helpers
     
     /// system under test maker
