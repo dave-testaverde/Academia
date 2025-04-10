@@ -10,6 +10,9 @@ import XCTest
 
 final class OllamaTests: XCTestCase {
     
+    /// size this parameter based on response time of LLM for your machine
+    let OLLAMA_LATENCY_SEC = 15.0
+    
     let academiaViewModelTests: AcademiaViewModelTests = AcademiaViewModelTests()
     let ollama: Ollama = Ollama()
     
@@ -17,7 +20,7 @@ final class OllamaTests: XCTestCase {
     func testOllama_whenOnGenerate_stateChange() async {
         let sut = makeSUT(viewModel: AcademiaViewModel(), checkMemoryLeaks: false)
         
-        await academiaViewModelTests.testViewModel_whenOnCreate()
+        XCTAssertEqual(sut.state, .idle)
         do {
             try await ollama.onTapGeneration()
             XCTAssertEqual(sut.state, .loading)
@@ -25,6 +28,28 @@ final class OllamaTests: XCTestCase {
             print("[ERROR] \(error.localizedDescription)")
             XCTFail()
         }
+    }
+    
+    @MainActor
+    func testOllama_whenOnGenerate_stateChange_withoutViewModel() async {
+       // TODO
+    }
+    
+    @MainActor
+    func testOllama_whenOnGenerate_streamStarted() async {
+        let sut = makeSUT(viewModel: AcademiaViewModel(), checkMemoryLeaks: false)
+        
+        do {
+            try await ollama.onTapGeneration()
+        } catch { XCTFail() }
+        
+        let expectation = XCTestExpectation(description: "Ollama stream started")
+        DispatchQueue.main.asyncAfter(deadline: .now() + OLLAMA_LATENCY_SEC, execute: {
+            print("message \(sut.message)")
+            XCTAssertFalse(sut.message.isEmpty)
+            expectation.fulfill()
+        })
+        await fulfillment(of: [expectation])
     }
     
     // MARK: - Helpers
