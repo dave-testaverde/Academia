@@ -10,8 +10,9 @@ import XCTest
 
 final class OllamaTests: XCTestCase {
     
-    /// size this parameter based on response time of LLM for your machine
+    /// size this parameters based on response time of LLM for your machine
     let OLLAMA_LATENCY_SEC = 15.0
+    let OLLAMA_TIME_TO_GENERATE_PAYLOAD = 18.0
     
     let academiaViewModelTests: AcademiaViewModelTests = AcademiaViewModelTests()
     let ollama: Ollama = Ollama()
@@ -47,6 +48,22 @@ final class OllamaTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + OLLAMA_LATENCY_SEC, execute: {
             print("message \(sut.message)")
             XCTAssertFalse(sut.message.isEmpty)
+            expectation.fulfill()
+        })
+        await fulfillment(of: [expectation])
+    }
+    
+    @MainActor
+    func testOllama_whenOnGenerate_responseLoaded() async {
+        let sut = makeSUT(viewModel: AcademiaViewModel(), checkMemoryLeaks: false)
+        
+        do {
+            try await ollama.onTapGeneration()
+        } catch { XCTFail() }
+        
+        let expectation = XCTestExpectation(description: "Ollama response loaded")
+        DispatchQueue.main.asyncAfter(deadline: .now() + OLLAMA_LATENCY_SEC + OLLAMA_TIME_TO_GENERATE_PAYLOAD, execute: {
+            XCTAssertEqual(sut.state, .loaded)
             expectation.fulfill()
         })
         await fulfillment(of: [expectation])
