@@ -34,6 +34,6 @@ struct QuizView: View {
 
 #Preview {
     QuizView(
-        quiz: Factory.quizMock
+        quiz: QuizManager.quizMock
     )
 }

@@ -81,6 +81,7 @@ class Ollama {
                  for try await result in stream {
                     let content = result.choices.first?.delta.content ?? ""
                      self.viewModel!.rcvMessage(from: content)
+                     print(self.viewModel!.message)
                  }
              } catch APIError.responseUnsuccessful(let description, let statusCode) {
                  self.viewModel!.onError(err: GetNetworkError.error(cause: "Network error with status code: \(statusCode) and description: \(description)"))

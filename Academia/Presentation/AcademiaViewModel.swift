@@ -32,15 +32,23 @@ class AcademiaViewModel {
     
     var pdfFileUrl: URL?
     
+    var quiz: Quiz?
+    
     func rcvMessage(from message: String){
         self.message += message
+    }
+    
+    func onResponseLoaded(){
+        QuizManager.generateQuiz(from: message, viewModel: self)
     }
     
     /// Events
     
     func onLoaded(){
-        print("Status change: onLoaded")
         self.state = .loaded
+        print("Status change: onLoaded")
+        
+        onResponseLoaded()
     }
     
     func onLoading(){

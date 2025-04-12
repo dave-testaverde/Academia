@@ -75,15 +75,7 @@ struct ContentView: View {
             }
             
             if(viewModel.state == .loaded){
-                if(Factory.generateQuiz(from: viewModel.message, viewModel: viewModel) != nil){
-                    HStack{
-                        QuizView(
-                            quiz: Factory.generateQuiz(from: viewModel.message, viewModel: viewModel)!
-                        )
-                    }
-                } else {
-                    Text("Unable to load JSON")
-                }
+                quizModule()
             }
             
             VStack {}
@@ -106,6 +98,20 @@ struct ContentView: View {
     func didDismiss() {
         // Handle the dismissing action.
         viewModel.onError = false
+    }
+    
+    func quizModule() -> AnyView {
+        if let quiz = viewModel.quiz {
+            return AnyView(
+                HStack{
+                    QuizView(
+                        quiz: quiz
+                    )
+                }
+            )
+        } else {
+            return AnyView(Text("Unable to load JSON"))
+        }
     }
 }
 
