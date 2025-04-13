@@ -69,6 +69,22 @@ final class OllamaTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
     
+    @MainActor
+    func testOllama_whenOnGenerate_responseDecodable() async {
+        let sut = makeSUT(viewModel: AcademiaViewModel(), checkMemoryLeaks: false)
+        
+        do {
+            try await ollama.onTapGeneration()
+        } catch { XCTFail() }
+        
+        let expectation = XCTestExpectation(description: "Ollama response loaded")
+        DispatchQueue.main.asyncAfter(deadline: .now() + OLLAMA_LATENCY_SEC + OLLAMA_TIME_TO_GENERATE_PAYLOAD, execute: {
+            XCTAssertTrue((sut.quiz != nil))
+            expectation.fulfill()
+        })
+        await fulfillment(of: [expectation])
+    }
+    
     // MARK: - Helpers
     
     /// system under test maker
