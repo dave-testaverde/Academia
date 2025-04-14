@@ -85,6 +85,22 @@ final class OllamaTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
     
+    @MainActor
+    func testOllama_whenOnGenerate_stateChange_withRAG() async {
+        let sut = makeSUT(viewModel: AcademiaViewModel(), checkMemoryLeaks: false)
+        
+        sut.enableRAG = true
+        
+        XCTAssertEqual(sut.state, .idle)
+        do {
+            try await ollama.onTapGeneration()
+            XCTAssertEqual(sut.state, .loading)
+        } catch {
+            print("[ERROR] \(error.localizedDescription)")
+            XCTFail()
+        }
+    }
+    
     // MARK: - Helpers
     
     /// system under test maker
